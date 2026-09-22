@@ -25,43 +25,43 @@
   }
   .wrap {
     width: 100%;
-    padding: 14px 20px 12px;
+    padding: 22px 32px 20px;
   }
 
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 14px;
+    margin-bottom: 20px;
     flex-wrap: nowrap;
   }
-  .title-row { display: flex; align-items: center; gap: 8px; overflow: hidden; }
-  .money-icon { flex: none; width: 20px; height: 20px; }
+  .title-row { display: flex; align-items: center; gap: 12px; overflow: hidden; }
+  .money-icon { flex: none; width: 34px; height: 34px; }
   .title {
-    font-size: 17px;
+    font-size: 30px;
     font-weight: 800;
     white-space: nowrap;
     color: var(--cd-navy);
   }
   .title span { color: var(--cd-orange); }
   .subtitle {
-    font-size: 10.5px;
+    font-size: 17px;
     color: var(--muted);
     white-space: nowrap;
-    margin-left: 4px;
+    margin-left: 6px;
   }
   .updated-box {
     flex: none;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 4px 12px;
+    padding: 8px 20px;
     white-space: nowrap;
-    font-size: 10.5px;
+    font-size: 17px;
     color: var(--muted);
   }
   .updated-box b { color: var(--cd-orange); font-weight: 700; }
@@ -69,29 +69,29 @@
   /* ===== painéis lado a lado ===== */
   .panels {
     display: flex;
-    gap: 16px;
+    gap: 26px;
   }
   .panel {
     flex: 1 1 0;
     min-width: 0;
     border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 14px 16px 12px;
+    border-radius: 20px;
+    padding: 22px 26px 20px;
     background: #FFFFFF;
   }
   .panel-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
   }
   .panel-title {
-    font-size: 13px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--cd-navy);
   }
   .panel-range {
-    font-size: 10px;
+    font-size: 16px;
     color: var(--muted);
     font-weight: 600;
   }
@@ -99,18 +99,18 @@
   .row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 7px 0;
+    gap: 16px;
+    padding: 15px 0;
   }
   .row + .row { border-top: 1px dashed var(--line); }
 
   .rank-badge {
     flex: none;
-    width: 18px; height: 18px;
+    width: 32px; height: 32px;
     border-radius: 50%;
     background: var(--muted);
     color: #fff;
-    font-size: 10px;
+    font-size: 16px;
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -126,11 +126,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 4px;
+    gap: 12px;
+    margin-bottom: 8px;
   }
   .name {
-    font-size: 12px;
+    font-size: 21px;
     font-weight: 700;
     color: var(--ink);
     white-space: nowrap;
@@ -138,26 +138,26 @@
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 7px;
   }
   .row.rank-1 .name { color: var(--cd-navy); }
-  .crown { font-size: 11px; }
+  .crown { font-size: 19px; }
   .value {
-    font-size: 12.5px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--cd-orange);
     white-space: nowrap;
     flex: none;
   }
   .bar-track {
-    height: 8px;
-    border-radius: 5px;
+    height: 16px;
+    border-radius: 8px;
     background: var(--panel);
     overflow: hidden;
   }
   .bar-fill {
     height: 100%;
-    border-radius: 5px;
+    border-radius: 8px;
     background: var(--bar-color, var(--cd-navy));
     width: 0%;
     transition: width 1s cubic-bezier(.22,1,.36,1);
@@ -166,15 +166,15 @@
 
   .qtd {
     flex: none;
-    font-size: 9.5px;
+    font-size: 16px;
     color: var(--muted);
-    min-width: 46px;
+    min-width: 74px;
     text-align: right;
   }
 
   .footer {
-    margin-top: 12px;
-    font-size: 10px;
+    margin-top: 20px;
+    font-size: 15px;
     color: var(--muted);
     text-align: center;
     white-space: nowrap;
@@ -184,7 +184,7 @@
   @media (max-width: 720px) {
     .panels { flex-direction: column; }
     .subtitle { display: none; }
-    .title { font-size: 15px; }
+    .title { font-size: 24px; }
   }
 </style>
 </head>
@@ -209,14 +209,14 @@
     <div class="panel" id="panel-quinzena">
       <div class="panel-head">
         <div class="panel-title">Quinzenal</div>
-        <div class="panel-range">15/09 – 30/09</div>
+        <div class="panel-range" id="range-quinzena">—</div>
       </div>
       <div id="rows-quinzena"></div>
     </div>
     <div class="panel" id="panel-mes">
       <div class="panel-head">
         <div class="panel-title">Acumulado do Mês</div>
-        <div class="panel-range">01/09 – 30/09</div>
+        <div class="panel-range" id="range-mes">—</div>
       </div>
       <div id="rows-mes"></div>
     </div>
@@ -240,6 +240,27 @@ const COMPETITORS = [
 
 function formatBRL(v) {
   return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+}
+
+function pad2(n) { return String(n).padStart(2, "0"); }
+function formatRange(start, end) {
+  return `${pad2(start.getDate())}/${pad2(start.getMonth() + 1)} – ${pad2(end.getDate())}/${pad2(end.getMonth() + 1)}`;
+}
+
+// Mesma regra de virada da edge function: quinzena 1 = dia 1-14, quinzena 2 = dia 15-fim do mês.
+// Ao virar o mês ou passar do dia 15, os rótulos (e os dados, via cache) mudam sozinhos — sem reset manual.
+function computePeriodLabels() {
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth(), day = now.getDate();
+  const mesInicio = new Date(y, m, 1);
+  const mesFim = new Date(y, m + 1, 0);
+  const [quinzenaInicio, quinzenaFim] = day <= 14
+    ? [new Date(y, m, 1), new Date(y, m, 14)]
+    : [new Date(y, m, 15), mesFim];
+  return {
+    quinzena: formatRange(quinzenaInicio, quinzenaFim),
+    mes: formatRange(mesInicio, mesFim),
+  };
 }
 
 async function fetchLeaderboard() {
@@ -304,8 +325,16 @@ async function refresh() {
   }
 }
 
+function renderPeriodLabels() {
+  const { quinzena, mes } = computePeriodLabels();
+  document.getElementById("range-quinzena").textContent = quinzena;
+  document.getElementById("range-mes").textContent = mes;
+}
+
+renderPeriodLabels();
 refresh();
 setInterval(refresh, 60 * 1000);
+setInterval(renderPeriodLabels, 60 * 1000);
 </script>
 
 </body>
