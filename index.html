@@ -32,40 +32,42 @@
     flex-direction: column;
   }
 
+  /* Tamanhos calculados via JS a partir da altura real renderizada (fitToHeight()) — nunca fixos em px,
+     pra se adaptar automaticamente a qualquer altura de iframe/zoom sem cortar nem sobrar espaço. */
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: calc(var(--wrap-h, 400px) * 0.02);
+    margin-bottom: calc(var(--wrap-h, 400px) * 0.015);
     flex-wrap: nowrap;
   }
-  .title-row { display: flex; align-items: center; gap: 9px; overflow: hidden; }
-  .money-icon { flex: none; width: 24px; height: 24px; }
+  .title-row { display: flex; align-items: center; gap: calc(var(--wrap-h, 400px) * 0.02); overflow: hidden; }
+  .money-icon { flex: none; width: calc(var(--wrap-h, 400px) * 0.09); height: calc(var(--wrap-h, 400px) * 0.09); }
   .title {
-    font-size: 22px;
+    font-size: calc(var(--wrap-h, 400px) * 0.095);
     font-weight: 800;
     white-space: nowrap;
     color: var(--cd-navy);
   }
   .title span { color: var(--cd-orange); }
   .subtitle {
-    font-size: 12px;
+    font-size: calc(var(--wrap-h, 400px) * 0.042);
     color: var(--muted);
     white-space: nowrap;
-    margin-left: 6px;
+    margin-left: calc(var(--wrap-h, 400px) * 0.012);
   }
   .updated-box {
     flex: none;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: calc(var(--wrap-h, 400px) * 0.015);
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 4px 14px;
+    padding: calc(var(--wrap-h, 400px) * 0.02) calc(var(--wrap-h, 400px) * 0.035);
     white-space: nowrap;
-    font-size: 12px;
+    font-size: calc(var(--wrap-h, 400px) * 0.042);
     color: var(--muted);
   }
   .updated-box b { color: var(--cd-orange); font-weight: 700; }
@@ -84,37 +86,38 @@
     flex-direction: column;
     border: 1px solid var(--line);
     border-radius: 14px;
-    padding: 10px 14px 10px;
+    padding: calc(var(--wrap-h, 400px) * 0.02) 14px;
     background: #FFFFFF;
   }
   .panel-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 6px;
+    margin-bottom: calc(var(--wrap-h, 400px) * 0.012);
   }
   .panel-title {
-    font-size: 15px;
+    font-size: calc(var(--wrap-h, 400px) * 0.065);
     font-weight: 800;
     color: var(--cd-navy);
   }
   .panel-range {
-    font-size: 11px;
+    font-size: calc(var(--wrap-h, 400px) * 0.045);
     color: var(--muted);
     font-weight: 600;
   }
 
-  .rows { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
+  .rows { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; min-height: 0; }
 
   .row {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 10px;
+    gap: calc(var(--row-h, 60px) * 0.18);
+    padding: 0 calc(var(--row-h, 60px) * 0.16);
     border-radius: 8px;
     overflow: hidden;
     flex: 1 1 0;
+    min-height: 0;
   }
   .bar-bg {
     position: absolute;
@@ -130,11 +133,12 @@
   .rank-badge {
     position: relative;
     flex: none;
-    width: 22px; height: 22px;
+    width: calc(var(--row-h, 60px) * 0.56);
+    height: calc(var(--row-h, 60px) * 0.56);
     border-radius: 50%;
     background: var(--muted);
     color: #fff;
-    font-size: 11px;
+    font-size: calc(var(--row-h, 60px) * 0.28);
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -146,7 +150,7 @@
     position: relative;
     flex: 1 1 auto;
     min-width: 0;
-    font-size: 15px;
+    font-size: calc(var(--row-h, 60px) * 0.34);
     font-weight: 700;
     color: var(--ink);
     white-space: nowrap;
@@ -154,20 +158,20 @@
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: calc(var(--row-h, 60px) * 0.08);
   }
   .row.rank-1 .name { color: var(--cd-navy); }
-  .crown { font-size: 13px; }
+  .crown { font-size: calc(var(--row-h, 60px) * 0.3); }
 
   .value-wrap {
     position: relative;
     flex: none;
     display: flex;
     align-items: baseline;
-    gap: 7px;
+    gap: calc(var(--row-h, 60px) * 0.1);
   }
   .value {
-    font-size: 26px;
+    font-size: calc(var(--row-h, 60px) * 0.56);
     font-weight: 800;
     color: var(--cd-orange);
     white-space: nowrap;
@@ -175,7 +179,7 @@
     letter-spacing: -0.3px;
   }
   .qtd {
-    font-size: 11px;
+    font-size: calc(var(--row-h, 60px) * 0.22);
     color: var(--muted);
     white-space: nowrap;
   }
@@ -289,6 +293,21 @@ function renderPanel(containerId, merged, valueKey, qtdKey) {
   `).join("");
 }
 
+// Mede a altura real que o navegador/iframe deu pra página (seja qual for — TV, editor do Jestor,
+// zoom diferente etc.) e usa isso pra calcular o tamanho das fontes via CSS var(--row-h)/var(--wrap-h).
+// Assim o texto sempre preenche o espaço disponível sem cortar, sem precisar adivinhar um valor fixo.
+function fitToHeight() {
+  const wrap = document.querySelector(".wrap");
+  document.documentElement.style.setProperty("--wrap-h", wrap.getBoundingClientRect().height + "px");
+
+  document.querySelectorAll(".rows").forEach((rowsEl) => {
+    const firstRow = rowsEl.querySelector(".row");
+    if (!firstRow) return;
+    const rowH = firstRow.getBoundingClientRect().height;
+    if (rowH > 0) rowsEl.style.setProperty("--row-h", rowH + "px");
+  });
+}
+
 async function refresh() {
   try {
     const rows = await fetchLeaderboard();
@@ -310,6 +329,7 @@ async function refresh() {
     renderPanel("rows-mes", merged, "faturamento_mes", "qtd_mes");
 
     document.getElementById("lastUpdated").textContent = new Date().toLocaleTimeString("pt-BR");
+    fitToHeight();
   } catch (e) {
     console.error(e);
   }
@@ -325,6 +345,7 @@ renderPeriodLabels();
 refresh();
 setInterval(refresh, 60 * 1000);
 setInterval(renderPeriodLabels, 60 * 1000);
+window.addEventListener("resize", fitToHeight);
 </script>
 
 </body>
