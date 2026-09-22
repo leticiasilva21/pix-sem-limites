@@ -32,24 +32,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 18px;
+    margin-bottom: 24px;
     flex-wrap: nowrap;
   }
-  .title-row { display: flex; align-items: center; gap: 12px; overflow: hidden; }
-  .money-icon { flex: none; width: 34px; height: 34px; }
+  .title-row { display: flex; align-items: center; gap: 16px; overflow: hidden; }
+  .money-icon { flex: none; width: 50px; height: 50px; }
   .title {
-    font-size: 30px;
+    font-size: 46px;
     font-weight: 800;
     white-space: nowrap;
     color: var(--cd-navy);
   }
   .title span { color: var(--cd-orange); }
   .subtitle {
-    font-size: 17px;
+    font-size: 19px;
     color: var(--muted);
     white-space: nowrap;
-    margin-left: 6px;
+    margin-left: 8px;
   }
   .updated-box {
     flex: none;
@@ -59,9 +59,9 @@
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 8px 20px;
+    padding: 10px 24px;
     white-space: nowrap;
-    font-size: 17px;
+    font-size: 20px;
     color: var(--muted);
   }
   .updated-box b { color: var(--cd-orange); font-weight: 700; }
@@ -69,29 +69,29 @@
   /* ===== painéis lado a lado ===== */
   .panels {
     display: flex;
-    gap: 26px;
+    gap: 30px;
   }
   .panel {
     flex: 1 1 0;
     min-width: 0;
     border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 22px 26px 20px;
+    border-radius: 22px;
+    padding: 26px 30px 22px;
     background: #FFFFFF;
   }
   .panel-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
   .panel-title {
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 800;
     color: var(--cd-navy);
   }
   .panel-range {
-    font-size: 16px;
+    font-size: 19px;
     color: var(--muted);
     font-weight: 600;
   }
@@ -99,18 +99,18 @@
   .row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 15px 0;
+    gap: 20px;
+    padding: 16px 0;
   }
   .row + .row { border-top: 1px dashed var(--line); }
 
   .rank-badge {
     flex: none;
-    width: 32px; height: 32px;
+    width: 48px; height: 48px;
     border-radius: 50%;
     background: var(--muted);
     color: #fff;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -122,15 +122,8 @@
     flex: 1 1 auto;
     min-width: 0;
   }
-  .name-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
   .name {
-    font-size: 21px;
+    font-size: 28px;
     font-weight: 700;
     color: var(--ink);
     white-space: nowrap;
@@ -138,43 +131,50 @@
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 9px;
+    margin-bottom: 10px;
   }
   .row.rank-1 .name { color: var(--cd-navy); }
-  .crown { font-size: 19px; }
-  .value {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--cd-orange);
-    white-space: nowrap;
-    flex: none;
-  }
+  .crown { font-size: 24px; }
   .bar-track {
-    height: 16px;
-    border-radius: 8px;
+    height: 10px;
+    border-radius: 5px;
     background: var(--panel);
     overflow: hidden;
   }
   .bar-fill {
     height: 100%;
-    border-radius: 8px;
+    border-radius: 5px;
     background: var(--bar-color, var(--cd-navy));
     width: 0%;
     transition: width 1s cubic-bezier(.22,1,.36,1);
   }
   .row.rank-1 .bar-fill { background: var(--cd-orange); }
 
-  .qtd {
+  .value-col {
     flex: none;
-    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .value {
+    font-size: 58px;
+    font-weight: 800;
+    color: var(--cd-orange);
+    white-space: nowrap;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .qtd {
+    font-size: 18px;
     color: var(--muted);
-    min-width: 74px;
-    text-align: right;
+    white-space: nowrap;
   }
 
   .footer {
-    margin-top: 20px;
-    font-size: 15px;
+    margin-top: 22px;
+    font-size: 17px;
     color: var(--muted);
     text-align: center;
     white-space: nowrap;
@@ -184,7 +184,8 @@
   @media (max-width: 720px) {
     .panels { flex-direction: column; }
     .subtitle { display: none; }
-    .title { font-size: 24px; }
+    .title { font-size: 32px; }
+    .value { font-size: 40px; }
   }
 </style>
 </head>
@@ -286,15 +287,15 @@ function renderPanel(containerId, merged, valueKey, qtdKey) {
     <div class="row${idx === 0 ? " rank-1" : ""}">
       <div class="rank-badge">${idx + 1}</div>
       <div class="name-bar">
-        <div class="name-line">
-          <span class="name">${idx === 0 ? '<span class="crown">🏆</span>' : ""}${c.displayName}</span>
-          <span class="value">${formatBRL(c[valueKey])}</span>
-        </div>
+        <div class="name">${idx === 0 ? '<span class="crown">🏆</span>' : ""}${c.displayName}</div>
         <div class="bar-track">
           <div class="bar-fill" style="--bar-color:${c.color}; width:${(c[valueKey] / maxVal) * 100}%"></div>
         </div>
       </div>
-      <div class="qtd">${c[qtdKey]} res.</div>
+      <div class="value-col">
+        <div class="value">${formatBRL(c[valueKey])}</div>
+        <div class="qtd">${c[qtdKey]} res.</div>
+      </div>
     </div>
   `).join("");
 }
