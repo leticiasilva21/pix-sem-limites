@@ -38,36 +38,42 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: calc(var(--wrap-h, 400px) * 0.02);
+    gap: calc(var(--header-h, 400px) * 0.02);
     margin-bottom: calc(var(--wrap-h, 400px) * 0.015);
     flex-wrap: nowrap;
+    overflow: hidden;
   }
-  .title-row { display: flex; align-items: center; gap: calc(var(--wrap-h, 400px) * 0.02); overflow: hidden; }
-  .money-icon { flex: none; width: calc(var(--wrap-h, 400px) * 0.09); height: calc(var(--wrap-h, 400px) * 0.09); }
+  .title-row { display: flex; align-items: center; gap: calc(var(--header-h, 400px) * 0.02); overflow: hidden; flex: 1 1 auto; min-width: 0; }
+  .money-icon { flex: none; width: calc(var(--header-h, 400px) * 0.09); height: calc(var(--header-h, 400px) * 0.09); }
   .title {
-    font-size: calc(var(--wrap-h, 400px) * 0.095);
+    flex: none;
+    font-size: calc(var(--header-h, 400px) * 0.095);
     font-weight: 800;
     white-space: nowrap;
     color: var(--cd-navy);
   }
   .title span { color: var(--cd-orange); }
   .subtitle {
-    font-size: calc(var(--wrap-h, 400px) * 0.042);
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: calc(var(--header-h, 400px) * 0.042);
     color: var(--muted);
     white-space: nowrap;
-    margin-left: calc(var(--wrap-h, 400px) * 0.012);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: calc(var(--header-h, 400px) * 0.012);
   }
   .updated-box {
     flex: none;
     display: flex;
     align-items: center;
-    gap: calc(var(--wrap-h, 400px) * 0.015);
+    gap: calc(var(--header-h, 400px) * 0.015);
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: calc(var(--wrap-h, 400px) * 0.02) calc(var(--wrap-h, 400px) * 0.035);
+    padding: calc(var(--header-h, 400px) * 0.02) calc(var(--header-h, 400px) * 0.035);
     white-space: nowrap;
-    font-size: calc(var(--wrap-h, 400px) * 0.042);
+    font-size: calc(var(--header-h, 400px) * 0.042);
     color: var(--muted);
   }
   .updated-box b { color: var(--cd-orange); font-weight: 700; }
@@ -93,17 +99,22 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+    gap: 8px;
     margin-bottom: calc(var(--wrap-h, 400px) * 0.012);
+    overflow: hidden;
   }
   .panel-title {
-    font-size: calc(var(--wrap-h, 400px) * 0.065);
+    font-size: calc(var(--panelhead-h, 400px) * 0.065);
     font-weight: 800;
     color: var(--cd-navy);
+    white-space: nowrap;
   }
   .panel-range {
-    font-size: calc(var(--wrap-h, 400px) * 0.045);
+    flex: none;
+    font-size: calc(var(--panelhead-h, 400px) * 0.045);
     color: var(--muted);
     font-weight: 600;
+    white-space: nowrap;
   }
 
   .rows { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; min-height: 0; }
@@ -153,15 +164,18 @@
     font-size: calc(var(--row-h, 60px) * 0.34);
     font-weight: 700;
     color: var(--ink);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
     align-items: center;
     gap: calc(var(--row-h, 60px) * 0.08);
   }
   .row.rank-1 .name { color: var(--cd-navy); }
-  .crown { font-size: calc(var(--row-h, 60px) * 0.3); }
+  .crown { flex: none; font-size: calc(var(--row-h, 60px) * 0.3); }
+  .name-text {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .value-wrap {
     position: relative;
@@ -298,7 +312,7 @@ function renderPanel(containerId, merged, valueKey, qtdKey) {
     <div class="row${idx === 0 ? " rank-1" : ""}" style="--bar-color:${c.color}">
       <div class="bar-bg" style="width:${(c[valueKey] / maxVal) * 100}%"></div>
       <div class="rank-badge">${idx + 1}</div>
-      <div class="name">${idx === 0 ? '<span class="crown">🏆</span>' : ""}${c.displayName}</div>
+      <div class="name">${idx === 0 ? '<span class="crown">🏆</span>' : ""}<span class="name-text">${c.displayName}</span></div>
       <div class="value-wrap">
         <span class="value">${formatBRL(c[valueKey])}</span>
         <span class="qtd">${c[qtdKey]} res.</span>
@@ -316,7 +330,7 @@ function renderAnualPanel(containerId, merged) {
     <div class="row${idx === 0 && c.titulos > 0 ? " rank-1" : ""}" style="--bar-color:${c.color}">
       <div class="bar-bg" style="width:${(c.titulos / maxVal) * 100}%"></div>
       <div class="rank-badge">${idx + 1}</div>
-      <div class="name">${idx === 0 && c.titulos > 0 ? '<span class="crown">🏆</span>' : ""}${c.displayName}</div>
+      <div class="name">${idx === 0 && c.titulos > 0 ? '<span class="crown">🏆</span>' : ""}<span class="name-text">${c.displayName}</span></div>
       <div class="value-wrap">
         <span class="value">${c.titulos}</span>
         <span class="qtd">${c.titulos === 1 ? "título" : "títulos"}</span>
@@ -325,19 +339,95 @@ function renderAnualPanel(containerId, merged) {
   `).join("");
 }
 
-// Mede a altura real que o navegador/iframe deu pra página (seja qual for — TV, editor do Jestor,
-// zoom diferente etc.) e usa isso pra calcular o tamanho das fontes via CSS var(--row-h)/var(--wrap-h).
-// Assim o texto sempre preenche o espaço disponível sem cortar, sem precisar adivinhar um valor fixo.
-function fitToHeight() {
-  const wrap = document.querySelector(".wrap");
-  document.documentElement.style.setProperty("--wrap-h", wrap.getBoundingClientRect().height + "px");
-
-  document.querySelectorAll(".rows").forEach((rowsEl) => {
-    const firstRow = rowsEl.querySelector(".row");
-    if (!firstRow) return;
-    const rowH = firstRow.getBoundingClientRect().height;
-    if (rowH > 0) rowsEl.style.setProperty("--row-h", rowH + "px");
+// Mede o espaço real que o navegador/iframe deu pra página (seja qual for — TV, editor do Jestor,
+// zoom diferente, 2 ou 3 colunas etc.) e calcula o tamanho das fontes a partir disso, em duas etapas:
+// 1) altura disponível define um tamanho "ideal" (--wrap-h/--header-h/--panelhead-h/--row-h);
+// 2) um corretor por largura reduz esses tamanhos se o texto (nome, valor em R$, título do painel...)
+//    não couber na largura da coluna — sem isso, valores longos (R$ 209.667) estourariam colunas
+//    estreitas (com 3 painéis lado a lado) e ficariam cortados.
+function worstFitRatio(elements) {
+  let minRatio = 1;
+  elements.forEach((el) => {
+    if (el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 0.5) {
+      minRatio = Math.min(minRatio, el.clientWidth / el.scrollWidth);
+    }
   });
+  return minRatio;
+}
+
+function currentVarPx(varName, fallback) {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(varName);
+  const n = parseFloat(raw);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+// Nunca aplica mais que ~15% de corte por rodada: se o nome já colapsou pra ~0px (porque o valor em
+// R$ tomou todo o espaço), a razão bruta cai perto de 0 e um corte "de uma vez" achataria a fonte pro
+// piso. Cortando aos poucos, o valor (que depende da mesma var) também encolhe a cada rodada e sobra
+// espaço real pro nome — convergindo em poucas iterações em vez de colapsar na primeira.
+const MAX_STEP_CUT = 0.85;
+
+function shrinkLoop() {
+  const root = document.documentElement;
+  for (let i = 0; i < 16; i++) {
+    let changed = false;
+
+    const headerRatio = worstFitRatio([document.querySelector(".header")].filter(Boolean));
+    if (headerRatio < 0.995) {
+      const cur = currentVarPx("--header-h", 400);
+      root.style.setProperty("--header-h", Math.max(cur * Math.max(headerRatio, MAX_STEP_CUT), 10) + "px");
+      changed = true;
+    }
+
+    const panelHeadRatio = worstFitRatio([...document.querySelectorAll(".panel-head")]);
+    if (panelHeadRatio < 0.995) {
+      const cur = currentVarPx("--panelhead-h", 400);
+      root.style.setProperty("--panelhead-h", Math.max(cur * Math.max(panelHeadRatio, MAX_STEP_CUT), 10) + "px");
+      changed = true;
+    }
+
+    // Considera tanto o overflow da linha inteira quanto do nome sozinho: o flex faz o nome encolher
+    // silenciosamente (sem a linha "estourar"), então só checar ".row" não pega nome cortado demais.
+    const rowRatio = worstFitRatio([
+      ...document.querySelectorAll(".row"),
+      ...document.querySelectorAll(".name-text"),
+    ]);
+    if (rowRatio < 0.995) {
+      const cur = currentVarPx("--row-h", 60);
+      root.style.setProperty("--row-h", Math.max(cur * Math.max(rowRatio, MAX_STEP_CUT), 10) + "px");
+      changed = true;
+    }
+
+    if (!changed) break;
+  }
+}
+
+function fitToHeight() {
+  const root = document.documentElement;
+  const wrap = document.querySelector(".wrap");
+  const wrapH = wrap.getBoundingClientRect().height;
+  root.style.setProperty("--wrap-h", wrapH + "px");
+  root.style.setProperty("--header-h", wrapH + "px");
+  root.style.setProperty("--panelhead-h", wrapH + "px");
+
+  const firstRow = document.querySelector(".row");
+  const rowH = firstRow ? firstRow.getBoundingClientRect().height : 60;
+  root.style.setProperty("--row-h", rowH + "px");
+
+  const subtitle = document.querySelector(".subtitle");
+  if (subtitle) subtitle.style.display = "";
+  shrinkLoop();
+
+  // Se mesmo encolhendo o título ele ainda ficar pequeno demais (< 55% do tamanho ideal), o espaço é
+  // curto demais pro subtítulo — some com ele e recalcula, priorizando o título "Pix Sem Limites".
+  if (subtitle) {
+    const headerScale = currentVarPx("--header-h", wrapH) / wrapH;
+    if (headerScale < 0.55) {
+      subtitle.style.display = "none";
+      root.style.setProperty("--header-h", wrapH + "px");
+      shrinkLoop();
+    }
+  }
 }
 
 async function refresh() {
