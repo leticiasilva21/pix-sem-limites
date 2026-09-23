@@ -222,6 +222,13 @@
       </div>
       <div class="rows" id="rows-mes"></div>
     </div>
+    <div class="panel" id="panel-anual">
+      <div class="panel-head">
+        <div class="panel-title">Vendedor do Ano</div>
+        <div class="panel-range" id="range-anual">—</div>
+      </div>
+      <div class="rows" id="rows-anual"></div>
+    </div>
   </div>
 </div>
 
@@ -255,14 +262,21 @@ function computePeriodLabels() {
   const [quinzenaInicio, quinzenaFim] = day <= 14
     ? [new Date(y, m, 1), new Date(y, m, 14)]
     : [new Date(y, m, 15), mesFim];
+
+  const MONTH_ABBR = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  let lastClosedM = m - 1, lastClosedY = y;
+  if (lastClosedM < 0) { lastClosedM = 11; lastClosedY -= 1; }
+  const anual = `fev – ${MONTH_ABBR[lastClosedM]}/${String(lastClosedY).slice(-2)}`;
+
   return {
     quinzena: formatRange(quinzenaInicio, quinzenaFim),
     mes: formatRange(mesInicio, mesFim),
+    anual,
   };
 }
 
-async function fetchLeaderboard() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/pix_sem_limites_leaderboard`, {
+async function fetchRpc(name) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
     method: "POST",
     headers: {
       "apikey": SUPABASE_ANON_KEY,
@@ -271,7 +285,7 @@ async function fetchLeaderboard() {
     },
     body: "{}",
   });
-  if (!res.ok) throw new Error("Falha ao buscar dados");
+  if (!res.ok) throw new Error(`Falha ao buscar ${name}`);
   return res.json();
 }
 
@@ -288,6 +302,24 @@ function renderPanel(containerId, merged, valueKey, qtdKey) {
       <div class="value-wrap">
         <span class="value">${formatBRL(c[valueKey])}</span>
         <span class="qtd">${c[qtdKey]} res.</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderAnualPanel(containerId, merged) {
+  const sorted = [...merged].sort((a, b) => b.titulos - a.titulos);
+  const maxVal = Math.max(1, sorted[0].titulos);
+  const container = document.getElementById(containerId);
+
+  container.innerHTML = sorted.map((c, idx) => `
+    <div class="row${idx === 0 && c.titulos > 0 ? " rank-1" : ""}" style="--bar-color:${c.color}">
+      <div class="bar-bg" style="width:${(c.titulos / maxVal) * 100}%"></div>
+      <div class="rank-badge">${idx + 1}</div>
+      <div class="name">${idx === 0 && c.titulos > 0 ? '<span class="crown">🏆</span>' : ""}${c.displayName}</div>
+      <div class="value-wrap">
+        <span class="value">${c.titulos}</span>
+        <span class="qtd">${c.titulos === 1 ? "título" : "títulos"}</span>
       </div>
     </div>
   `).join("");
@@ -310,7 +342,11 @@ function fitToHeight() {
 
 async function refresh() {
   try {
-    const rows = await fetchLeaderboard();
+    const [rows, anualRows] = await Promise.all([
+      fetchRpc("pix_sem_limites_leaderboard"),
+      fetchRpc("pix_vendedor_do_ano_leaderboard"),
+    ]);
+
     const byOperador = {};
     rows.forEach(r => { byOperador[r.operador] = r; });
 
@@ -325,8 +361,16 @@ async function refresh() {
       };
     });
 
+    const byOperadorAnual = {};
+    anualRows.forEach(r => { byOperadorAnual[r.operador] = r; });
+    const mergedAnual = COMPETITORS.map(c => ({
+      ...c,
+      titulos: Number((byOperadorAnual[c.operador] || {}).titulos) || 0,
+    }));
+
     renderPanel("rows-quinzena", merged, "faturamento_quinzena", "qtd_quinzena");
     renderPanel("rows-mes", merged, "faturamento_mes", "qtd_mes");
+    renderAnualPanel("rows-anual", mergedAnual);
 
     document.getElementById("lastUpdated").textContent = new Date().toLocaleTimeString("pt-BR");
     fitToHeight();
@@ -336,9 +380,10 @@ async function refresh() {
 }
 
 function renderPeriodLabels() {
-  const { quinzena, mes } = computePeriodLabels();
+  const { quinzena, mes, anual } = computePeriodLabels();
   document.getElementById("range-quinzena").textContent = quinzena;
   document.getElementById("range-mes").textContent = mes;
+  document.getElementById("range-anual").textContent = anual;
 }
 
 renderPeriodLabels();
